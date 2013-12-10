@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  
+
+   <script src="js/jquery-1.6.4.min.js" type="text/javascript"></script>
+   <script src="js/jquery.constant.js" type="text/javascript"></script>
+  <script> 
+  
+  
+	var abc = new Array();
+ 
+ 	var latitude = new Array();
+ 	var longitude = new Array();
+ 
+ 	var location = new Array();
+  
+  
+   function initialize(latitude,longitude) {
+	   
+	  location = ["Good",latitude,longitude,"1"];
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: new google.maps.LatLng(51.370602,-0.111494), 
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < 4; i++) {  
+		
+		 
+	
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(location[i][1], location[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        	return function() {
+          infowindow.setContent("ABCD");
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+      }
+
+      /*function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' + 'callback=initialize';
+        document.body.appendChild(script);
+      }
+
+      window.onload = loadScript;*/
+	  
+	  
+	 
+	 
+	 
+	 function  onMapLoad(){
+		 
+		 
+		 var addinquiry = {
+                               "Login_id" : sessionStorage.login_id
+                                                     
+                                                        
+						}
+						
+						
+				var param1= 'GetMap='+JSON.stringify(addinquiry);
+				getDetails=getDataFromWebservices(getmapurl,param1);
+				//getDetails=getDataFromWebservices(loginurl,param1);
+				var status =getDetails.status;
+				var ResultCollection = getDetails.Result;
+				console.log(ResultCollection);
+				
+				if(status=="YES")
+						{
+							for(var i=0; i<4; i++){
+								
+								var id = ResultCollection[i].id;								
+								var image = ResultCollection[i].image;								
+								var firstName = ResultCollection[i].firstName;
+								var area = ResultCollection[i].area;	
+								
+								
+								latitude =  ResultCollection[i].latitude;
+								longitude=  ResultCollection[i].longitude;
+								
+								
+															
+								/*latitude = ResultCollection[i].latitude;
+								longitude = ResultCollection[i].longitude;
+								console.log( latitude+"======="+longitude);*/
+								
+								
+								initialize(latitude,longitude);
+								
+								
+								
+								
+								}
+								
+							
+					}
+					
+		
+		 } 
+		 
+		 
+		 
+	
+    </script>
+
+
+          
+</head> 
+<body onLoad="onMapLoad();">
+    
+<div>
+<div id="map" style="width: 900px; height: 700px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+</div>
+
+
+</body>
+</html>
